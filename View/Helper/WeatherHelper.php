@@ -10,6 +10,7 @@
  * Y después hacer uso de los métodos públicos para recibir la información de cada key
  * 
  * @link http://developer.worldweatheronline.com/io-docs
+ * @link http://www.worldweatheronline.com/feed/wwoConditionCodes.txt
  * @package weather.view.helper
  * @author Alfonso Etxeberria
  */
@@ -55,6 +56,15 @@ class WeatherHelper extends AppHelper
  */
   private $__current = null;
   
+  
+/**
+ * El nombre de la familia de iconos situados en Plugin/Weather/webroot/img/icons
+ *
+ * @access private
+ */
+  private $__iconFamily = 'black';
+  
+  
 
   public function __construct( View $View, $settings = array()) 
   {
@@ -81,6 +91,18 @@ class WeatherHelper extends AppHelper
     $this->__city = $city;
     $this->__request();
 	}
+	
+/**
+ * Setea la familia de iconos
+ * Los ficheros se encuentran en Plugin/Weather/webroot/img/icons
+ *
+ * @param string $family 
+ * @return void
+ */
+	public function setIconFamily( $family)
+	{
+	  $this->$__iconFamily = $family;
+	}
   
 /**
  * Realiza una petición al API y guarda la información en $this->__current
@@ -95,8 +117,8 @@ class WeatherHelper extends AppHelper
         'format' => 'json',
         'num_of_days' => 5
     ));
-    
     $data = json_decode( $response, true);
+
     $this->__current = $data ['data'];
   }
   
@@ -127,13 +149,36 @@ class WeatherHelper extends AppHelper
 /**
  * Devuelve el nombre de la class CSS para la situación del cielo
  *
- * @param string $day 
- * @return string
+ * @param integer $day El número de día (0 es hoy) 
+ * @param array $attributes Atributos para la etiqueta <img> 
+ * @param string $size El tamaño del icono (64, 128, 256, 512)
+ * @return void
  */
-  public function sky( $day)
+  public function icon( $day, $attributes = array(), $size = '64')
   {
-    $value = $this->getValue( 'weatherDesc', $day);
-    return 'weather-' . strtolower( $value [0]['value']);
+    $value = $this->getValue( 'weatherIconUrl', $day);
+    if( !empty( $value [0]['value']))
+    {
+      $value = $value [0]['value'];
+      $file = substr( $value, strrpos( $value, '/') + 1);
+      $sky = $this->getValue( 'weatherDesc', $day);
+      $attributes ['alt'] = $sky [0]['value'];
+      return $this->Html->image( '/weather/img/icons/'. $this->__iconFamily . '/'. $size .'/'. $file, $attributes);
+    }
+    
+    return '';
+  }
+  
+/**
+ * Devuelve la temperatura actual (solo para la condición metereológica actual)
+ *
+ * @param string $day 
+ * @return void
+ */
+  public function temp( $day)
+  {
+    $value = $this->getValue( 'temp_C', $day);
+    return $value ."º";
   }
   
 /**
