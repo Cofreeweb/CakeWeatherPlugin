@@ -163,7 +163,7 @@ class WeatherHelper extends AppHelper
       $file = substr( $value, strrpos( $value, '/') + 1);
       $sky = $this->getValue( 'weatherDesc', $day);
       $attributes ['alt'] = $sky [0]['value'];
-      return $this->Html->image( '/weather/img/icons/'. $this->__iconFamily . '/'. $size .'/'. $file, $attributes);
+      return $this->Html->image( '/Weather/img/icons/'. $this->__iconFamily . '/'. $size .'/'. $file, $attributes);
     }
     
     return '';
