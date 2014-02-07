@@ -111,15 +111,24 @@ class WeatherHelper extends AppHelper
  */
   private function __request()
   {
-    $response = $this->Http->get( $this->__apiURL, array(
+    $data = array(
         'key' => $this->__apiKey,
         'q' => $this->__city,
         'format' => 'json',
         'num_of_days' => 5
-    ));
-    $data = json_decode( $response, true);
+    );
+    
+    $key = md5( serialize( $data));
+    $result = Cache::read( $key, 'weather');
 
-    $this->__current = $data ['data'];
+    if( !$result)
+    {
+      $response = $this->Http->get( $this->__apiURL, $data);
+      $result = json_decode( $response, true);
+      Cache::write( $key, $result, 'weather');
+    }
+    
+    $this->__current = $result ['data'];
   }
   
 /**
