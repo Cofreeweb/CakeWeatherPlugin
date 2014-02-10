@@ -223,6 +223,6 @@ class WeatherHelper extends AppHelper
   public function day( $day)
   {
     $value = $this->getValue( 'date', $day);
-    return strftime( "%A", strtotime( $value));
+    return utf8_encode( strftime( "%A", strtotime( $value)));
   }
 }
