@@ -142,6 +142,11 @@ class WeatherHelper extends AppHelper
  */
   public function getValue( $key, $day = 'current')
   {
+    if( !$this->__city)
+    {
+      return false;
+    }
+    
     if( $day === 'current')
     {
       $data = $this->__current ['current_condition'];
