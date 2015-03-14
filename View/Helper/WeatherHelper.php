@@ -26,7 +26,7 @@ class WeatherHelper extends AppHelper
  *
  * @access private
  */
-  private $__apiURL = 'http://api.worldweatheronline.com/free/v1/weather.ashx';
+  private $__apiURL = 'http://api2.worldweatheronline.com/free/v1/weather.ashx';
 
 /**
  * El api key, que es seteado en el constructor tomando el valor de Configure::read( 'Weather.apiKey')

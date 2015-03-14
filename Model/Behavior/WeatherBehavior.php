@@ -13,7 +13,7 @@ App::uses('HttpSocket', 'Network/Http');
  
 class WeatherBehavior extends ModelBehavior
 {
-  private $__apiURL = 'http://api.worldweatheronline.com/free/v1/weather.ashx';
+  private $__apiURL = 'http://api2.worldweatheronline.com/free/v1/weather.ashx';
   
   public function checkCity( Model $Model, $value) 
   {
